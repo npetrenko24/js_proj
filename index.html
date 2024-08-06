@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>TODO JS>>/ Palkas</h1>
-
+    <h1>TODO JS>>/ <br>Palkas</h1>
+    <div id="user-input-container">
     <input type="text" placeholder="NAME of task" id="nameholder"></input>
-    <button class="submit" onclick="addTask();">submit</button>
-    <div id="task_container">
+    <button class="submit" id="submit-key">submit</button>
+    <br>
+    <input type="checkbox" id="check-all">check all</input>
+</div>  
+    <!--No need in this-->
+    
+    <div id="task-container">
+    </div>
+    <div id="counter-container">
+    <div><h1 id="all-tasks-count">0</h1><p>ALL<br>TASKS</p></div>
+    <div><h1 id="active-tasks-count">0</h1><p>ACTIVE<br>TASKS</p></div>
+    <div><h1 id="completed-tasks-count">0</h1><p>COMPLETED<br>TASKS</p></div>
     </div>
     <script src="main.js"></script>
 </body>
