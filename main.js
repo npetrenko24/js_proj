@@ -156,7 +156,7 @@ function addTask() {
     renderTask(TaskArray)
 }
 
-function pageGenerate(onlyActive = undefined){
+function pageGenerate(onlyActive = undefined,page=0){
     pageContainer.innerHTML = ""
     //remake !!!!!!
     for (i=0;i<TaskArray.length;i++){
