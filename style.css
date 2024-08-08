@@ -22,7 +22,7 @@ ol {
     margin-bottom: 20px;
 }
 
-div.task{
+li.task{
     display: flex;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -30,13 +30,12 @@ div.task{
     justify-content: center;
     align-items: center;
     border: 3px solid red;
-
 }
 
 .complete-flag{
     margin-right: 10px;
 }
-.delbutton {
+.task-delbutton {
     justify-content: flex-end;
     position:relative;
     justify-content: flex-end;
