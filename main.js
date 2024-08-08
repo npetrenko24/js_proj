@@ -3,48 +3,54 @@
 
 //true is checked, false not
 // task array data like {name:"name", status:true/false}
+const TASKS_ON_PAGE = 5
 const DOUBLE_CLICK = 2
 //it doesn't change status  
 const escapeKeyCode = "Escape"
 const enterKeyCode = "Enter"
+
 const taskContainer = document.querySelector("#task-container")
 const countersContainer = document.querySelector("#counter-container")
-// const pageContainer = document.querySelector("#page-container")
+const pageContainer = document.querySelector("#page-container")
 const completedTaskCounter = document.querySelector("#completed-tasks-count > h1")
 const activeTaskCounter = document.querySelector("#active-tasks-count > h1")
 const allTaskCounter = document.querySelector("#all-tasks-count > h1")
 const nameInput = document.querySelector("#nameholder")
 const checkAllButton = document.querySelector("#check-all")
-const submitButton = document.querySelector("#submit-key")
+const addButton = document.querySelector("#add-button")
+const deleteAllCompletedButton = document.querySelector("#delete-all-completed")
 
 
 
 
-
-const getTaskInput = (event) => {
+const getTaskUserInput = (event) => {
     return event.target.parentElement.children[2]
 }
+
 const getTaskText = (event) => {
     return event.target.parentElement.children[1]
 }
+
 const getTaskId = (event) => {
     return Number(event.target.parentElement.id)
 }
 
+
 let taskArray = [];
 //Nan for all
 let modeRender = NaN
+let currentPage = 0
 
 
 
-//working on it
+
 const deleteTask = (taskId) => {
     taskArray = taskArray.filter((task) => task.id !== taskId)
 
     generateTasksList()
 }
 
-let escapeExp = (string) => {
+const escapeExp = (string) => {
     let protectedString = string.trim()
     protectedString.replace(/ /g, " ")
     protectedString.replace(/>/g, "&gt")
@@ -52,25 +58,39 @@ let escapeExp = (string) => {
     if (string === "" || string === " ") return false
     return protectedString
 }
+
 const updateTasksCounter=()=>{
     console.log("count");
-    
-    completedTaskCounter.innerHTML = 0
-    activeTaskCounter.innerHTML = 0
-    allTaskCounter.innerHTML = 0
+    let activeTasks = 0
+    let completedTasks= 0
     taskArray.forEach((task)=>{
-        task.isChecked ? completedTaskCounter.innerHTML++ : activeTaskCounter.innerHTML++
-        allTaskCounter.innerHTML++
+        task.isChecked ? completedTasks++ : activeTasks++
     })
+    activeTaskCounter.textContent= activeTasks
+    completedTaskCounter.textContent = completedTasks
+    allTaskCounter.textContent = activeTasks+completedTasks
+    activeTasks+completedTasks===0?checkAllButton.disabled= true:checkAllButton.disabled = false
 }
 
-
+const generatePagesList=(renderList) =>{
+    let string = "";
+    for (let i=0;i<renderList.length/TASKS_ON_PAGE;i++){
+        string+=`<button class="${i+1}">${i+1}</button>`
+    }
+    pageContainer.innerHTML=string
+}
+const generatePageContent = (renderList,page=currentPage) =>{
+    let pageList = renderList.slice(TASKS_ON_PAGE*page,TASKS_ON_PAGE*(page+1))
+    console.log(pageList);
+    render(pageList)
+    
+}
 const generateTasksList = ()=>{
-    console.log("HNGHHG");
     
     if (isNaN(modeRender)){
         updateTasksCounter()
-        renderTasks(taskArray)
+        generatePagesList(taskArray)
+        generatePageContent(taskArray)
         return
     }
     let fetchedTaskArray=taskArray.filter(
@@ -78,18 +98,18 @@ const generateTasksList = ()=>{
     )
     console.log(fetchedTaskArray);
     updateTasksCounter()
-    renderTasks(fetchedTaskArray)
+    generatePagesList(fetchedTaskArray)
+    generatePageContent(fetchedTaskArray)
     return 
 }
 
-
-const renderTasks = (renderList) => {
+const render = (renderList) => {
     let renderedTasks = ""
 
-    renderList.forEach((item) => {
-        renderedTasks += `<li id="${item.id}" class="task">
-        <input type="checkbox" class="task-checkbox" ${item.isChecked ? 'checked' : ''}>
-        <span class="task-textbox">${item.taskName}</span>
+    renderList.forEach((task) => {
+        renderedTasks += `<li id="${task.id}" class="task">
+        <input type="checkbox" class="task-checkbox" ${task.isChecked ? 'checked' : ''}>
+        <span class="task-textbox">${task.taskText}</span>
         <input hidden maxlength="255" class="task-input"></input>
         <button class="task-delbutton">X</button></li>`
 
@@ -102,7 +122,7 @@ const renderTasks = (renderList) => {
 const addTask = () => {
     let nameString = escapeExp(nameInput.value)
     if (nameString === false) return
-    const newTask = { id: Date.now(), taskName: nameString, isChecked: false }
+    const newTask = { id: Date.now(), taskText: nameString, isChecked: false }
     console.info(`added element with name ${nameString}!!`)
     taskArray.push(newTask)
     nameInput.value = ""
@@ -111,7 +131,7 @@ const addTask = () => {
     generateTasksList(modeRender)
 }
 
-const editTaskCancel = (event) => {
+const cancelEditingTask = (event) => {
     let taskTextElement = getTaskText(event)
 
     console.log("key ", event)
@@ -125,10 +145,8 @@ const changeTaskText = (id, taskText) => {
     if (formatedText === false) return
 
     taskArray.forEach((task, index) => {
-        console.log(task.id);
-        //task.id === id ? task.taskName = formatedText
         if (task.id === id) {
-            taskArray[index].taskName = formatedText
+            taskArray[index].taskText = formatedText
         }
     })
     generateTasksList(modeRender)
@@ -145,14 +163,10 @@ const changeAllTasksStatus = (event) => {
 }
 
 
-
-
 const handleClick = (event) => {
     console.log(event)
     let taskId = Number(event.target.parentElement.id)
     if (event.target.className === "task-delbutton") {
-        //some del logic
-        console.log(event.target.className);
         deleteTask(taskId);
         generateTasksList(modeRender)
     }
@@ -167,13 +181,13 @@ const handleClick = (event) => {
 
     }
     if (event.detail === DOUBLE_CLICK && event.target.className === "task-textbox") {
-        let taskInputElement = getTaskInput(event)
+        let taskInputElement = getTaskUserInput(event)
         event.target.hidden = true
 
         taskInputElement.hidden = false
         taskInputElement.focus()
         taskInputElement.value = event.target.textContent
-        taskInputElement.onblur = editTaskCancel;
+        taskInputElement.onblur = cancelEditingTask;
 
     }
 
@@ -182,7 +196,7 @@ const handleClick = (event) => {
 const handleKeyUp = (event) => {
 
     if (event.target.className === "task-input" && event.key === escapeKeyCode) {
-        editTaskCancel(event)
+        cancelEditingTask(event)
 
     }
     if (event.target.className === "task-input" && event.key === enterKeyCode) {
@@ -216,13 +230,29 @@ countersContainer.addEventListener("click",(event)=>{
 }
 )
 
+pageContainer.addEventListener("click",(event)=>{
+    if(event.target.localName==="button"){
+
+        let pageCount = Number( event.target.className) - 1
+        currentPage=pageCount
+        generateTasksList()
+    }
+    
+})
+
 checkAllButton.addEventListener("click", changeAllTasksStatus)
 //ul button event
 taskContainer.addEventListener("click", handleClick)
 
 taskContainer.addEventListener("keyup", handleKeyUp)
 //submit button event
-submitButton.addEventListener("click", addTask)
+addButton.addEventListener("click", addTask)
+deleteAllCompletedButton.addEventListener("click",()=>{
+    //alert("del all")
+    taskArray=taskArray.filter((task)=>!task.isChecked)
+    generateTasksList()    
+    }    
+)
 
 
 
