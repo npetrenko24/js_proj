@@ -14,7 +14,7 @@
         <input type="text" placeholder="NAME of task" id="nameholder"></input>
         <button class="submit" id="submit-key">submit</button>
         <br>
-        <input type="checkbox" id="check-all" disabled="disabled">check all</input>
+        <input type="checkbox" maxlength="255" id="check-all" >check all</input>
     </div>
     <!--No need in this-->
 
@@ -37,17 +37,20 @@
         
     </div>
     <div id="counter-container">
-        <div class="counter">
+        <div id="all-tasks-count" class="counter">
             <h1 id="all-tasks-count">0</h1>
             <p>ALL<br>TASKS</p>
+            <button id="all-tasks-button">CHOOSE</button>
         </div>
-        <div class="counter">
-            <h1 id="active-tasks-count">0</h1>
+        <div id="active-tasks-count"class="counter">
+            <h1 >0</h1>
             <p>ACTIVE<br>TASKS</p>
+            <button id="active-tasks-button">CHOOSE</button>
         </div>
-        <div class="counter">
-            <h1 id="completed-tasks-count">0</h1>
+        <div id="completed-tasks-count" class="counter">
+            <h1>0</h1>
             <p>COMPLETED<br>TASKS</p>
+            <button id="completed-tasks-button">CHOOSE</button>
         </div>
     </div>
     <script src="./main.js"></script>

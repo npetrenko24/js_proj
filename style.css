@@ -44,7 +44,6 @@ li.task{
     background-color: rgb(176, 61, 61);
 }
 
-
 li.task-name{
     margin-bottom: 10px;
     border: 3px solid red;
@@ -59,6 +58,7 @@ li.task-name{
     
 }
 #counter-container > * {
+
  margin-left: 20px;
  margin-top:10px;
  margin-right: 20px;
