@@ -65,7 +65,9 @@ li.task-name{
  width: 50vw;
  
 }
-
+.current-counter{
+    background-color: red;
+}
 #counter-container p {
     
     text-align: center;
@@ -77,6 +79,9 @@ li.task-name{
     max-height: 200px;
     flex-wrap: wrap;
     justify-content: center;
+}
+.current-page{
+    background-color: red;
 }
 .counter {
     border: 3px solid red;
