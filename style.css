@@ -12,6 +12,9 @@ body>h1{
     color: #7d5232;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     
+    margin-bottom: 10px;
+    padding-bottom: 50px;
+    border-bottom: 10px solid #5aacd8 ;
 }
 #check-all{
     accent-color:green;
@@ -24,6 +27,8 @@ ol {
     width: 80vw;
     margin: auto;
     margin-bottom: 20px;
+    border-top: solid #5aacd8 1.5px;
+    border-bottom: solid #5aacd8 1.5px;
     
 }
 
@@ -97,6 +102,8 @@ border-radius: 20px;
     max-height: 200px;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 10px;
+    border-bottom: solid  #5aacd8 1.5px;
 }
 #page-container > button {
 background-color: #f5a266;
@@ -114,6 +121,12 @@ background-color: #f5a266;
     border-radius: 20px;
     
 }
+#del-button-container{
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 #delete-all-completed:hover{
     transition: background-color 250ms;
     background-color: red;
@@ -126,7 +139,13 @@ background-color: #f5a266;
     display: flex;
     margin: 0 auto;
     width: 20vw;
+    max-height: 80vh;
     border-bottom: 2px #db915b;
+    background-color: #5aacd8;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 15px;
+    
 }
 #user-input-container>*{
     margin:0 auto;
@@ -134,7 +153,6 @@ background-color: #f5a266;
 }
 #nameholder{
     text-align: center;
-    margin-top: 10px;
     margin-left: 10px;
     width: 20%;
     display: block;
@@ -143,7 +161,7 @@ background-color: #f5a266;
   background-color: #ea9a62;
   border-radius: 20px;
   margin-bottom:30px;
-  margin-top:20px;
+  margin-top:10px;
 }
 .copy{
     position: absolute;
