@@ -140,6 +140,9 @@ const addTask = () => {
     taskTextInput.value = ""
     checkAllButton.checked = false;
     taskTextInput.focus()
+    modeRender=NaN
+    countersContainer.querySelector(".current-counter").className = "counter"
+    allTaskCounter.parentElement.className += " current-counter"
     switchPage(false)
 }
 

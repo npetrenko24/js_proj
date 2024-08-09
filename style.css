@@ -1,10 +1,20 @@
+input[type="checkbox"]{
+    color: #db915b;
+}
+body{
+    background-color: #62baea;
+}
 
-
-
-h1{
+body>h1{
     width: 100%;
     text-align: center;
     font-size: 90wh;
+    color: #7d5232;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+#check-all{
+    accent-color:green;
 }
 
 ol {
@@ -26,10 +36,13 @@ li.task{
     max-height: 100%;
     justify-content: center;
     align-items: center;
-    border: 3px solid red;
+    border: 3px solid #db915b;
 }
 .task-checkbox{
     accent-color:green;
+}
+label{
+    text-align: center;
 }
 .complete-flag{
     margin-right: 10px;
@@ -41,13 +54,17 @@ li.task{
     margin-left: 10px;
     right: 0px;
     background: none;
-    border-color: rgb(238, 105, 105);
+    border-color: #c88453;
+    border-radius: 50%;
 }
 
-li.task-name{
+li{
+    background-color: #ea9a62;
     margin-bottom: 10px;
-    border: 3px solid red;
+    border-radius: 10px;
+    border: 1px solid #db915b;
     margin-right: 2vh ;
+    
 }
 
 #counter-container{
@@ -55,23 +72,24 @@ li.task-name{
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
 #counter-container > * {
-
  margin-left: 20px;
  margin-top:10px;
  margin-right: 20px;
  width: 50vw;
- 
+ width: 100%;
+text-align: center;
+border-radius: 20px;
 }
+
 .current-counter{
-    background-color: red;
+    transition: background-color 100ms;
+    background-color: #5aacd8!important;
+
 }
-#counter-container p {
-    
-    text-align: center;
-    
+#counter-container > div >button{
+    background-color: #5aacd8;
 }
 #page-container{
     display: flex;
@@ -80,20 +98,66 @@ li.task-name{
     flex-wrap: wrap;
     justify-content: center;
 }
+#page-container > button {
+background-color: #f5a266;
+}
 .current-page{
-    background-color: red;
+    background-color: #eacc62!important;
 }
-.counter {
-    border: 3px solid red;
-}
+
 .counter button {
     width: 100%;
     height: 50px;
 }
-
+#delete-all-completed{
+    background-color: #db915b;
+    border-radius: 20px;
+    
+}
 #delete-all-completed:hover{
+    transition: background-color 250ms;
     background-color: red;
 }
 #add-button:hover{
     background-color: green;
+    transition: background-color 0.5s;
+}
+#user-input-container{
+    display: flex;
+    margin: 0 auto;
+    width: 20vw;
+    border-bottom: 2px #db915b;
+}
+#user-input-container>*{
+    margin:0 auto;
+    
+}
+#nameholder{
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 20%;
+    display: block;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #ea9a62;
+  border-radius: 20px;
+  margin-bottom:30px;
+  margin-top:20px;
+}
+.copy{
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    opacity: 8%;
+}
+.copy:hover{
+    transition: opacity 0.8s;
+    opacity: 60%;
+}
+.add{
+    background-color: #db915b;
+    width: 40px;
+    border-radius: 80px;
+    margin-left:20px;
 }
