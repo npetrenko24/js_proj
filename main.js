@@ -18,7 +18,7 @@
   );
 
   let taskArray = [];
-  let modeRender = NaN;
+  let modeRender = "all";
   let currentPage = 1;
   let totalPages = 0;
 
@@ -46,10 +46,9 @@
       .replace(/ {2,}/g, " ")
       .replace(/>/g, "&gt")
       .replace(/</g, "&lt");
-    if (string === "" || string === " ") return false;
+    if (string === "" || string === " ") return "";
 
     return protectedString;
-
   };
 
   const updateTasksCounter = () => {
@@ -95,19 +94,26 @@
   };
 
   const generateElement = () => {
-    let fetchedTaskArray = {};
-
-    if (isNaN(modeRender)) fetchedTaskArray = taskArray;
-    else {
-      fetchedTaskArray = taskArray.filter(
-        (task) => task.isChecked === modeRender
-      );
+    if (modeRender === "all") {
+      updateTasksCounter();
+      createPageButtons(taskArray);
+      generatePagedContent(taskArray);
+      return taskArray;
     }
+
+    let fetchedTaskArray = taskArray.filter((task) => {
+      if (modeRender === "active" && !task.isChecked) {
+        return true;
+      }
+      if (modeRender === "completed" && task.isChecked) {
+        return true;
+      }
+    });
+
     updateTasksCounter();
     createPageButtons(fetchedTaskArray);
     generatePagedContent(fetchedTaskArray);
     return fetchedTaskArray;
-    
   };
 
   const render = (renderList) => {
@@ -127,17 +133,24 @@
 
   const addTask = () => {
     let nameString = excapeExprAndBlank(taskTextInput.value);
-    if (nameString === false) return;
-    const newTask = { id: Date.now(), taskText: nameString, isChecked: false };
+    if (nameString === "") {
+      /* empty */
+    } else {
+      const newTask = {
+        id: Date.now(),
+        taskText: nameString,
+        isChecked: false,
+      };
 
-    taskArray.push(newTask);
-    taskTextInput.value = "";
-    checkAllButton.checked = false;
-    taskTextInput.focus();
-    modeRender = NaN;
-    countersContainer.querySelector(".current-counter").className = "counter";
-    allTaskCounter.parentElement.className += " current-counter";
-    switchPage(false);
+      taskArray.push(newTask);
+      taskTextInput.value = "";
+      checkAllButton.checked = false;
+      taskTextInput.focus();
+      modeRender = "all";
+      uncheckCounters(activeTaskCounter);
+      allTaskCounter.parentElement.className += " current-counter";
+      switchPage(false);
+    }
   };
 
   const changeTaskText = (id, taskText) => {
@@ -179,9 +192,16 @@
     }
   };
 
-  const blurTaskCallback = (event) => {
-    console.log(event);
+  const uncheckCounters = (counterElement) => {
+    Array.from(counterElement.parentElement.parentElement.children).forEach(
+      (_, index) => {
+        counterElement.parentElement.parentElement.children[index].className =
+          "counter";
+      }
+    );
+  };
 
+  const blurTaskCallback = (event) => {
     const taskId = getTaskId(event);
     const taskText = getTaskUserInput(event).value;
     changeTaskText(taskId, taskText);
@@ -234,35 +254,33 @@
       taskInputElement.hidden = true;
       taskTextElement.hidden = false;
       changeTaskText(taskId, taskInputElement.value);
-      taskInputElement.hidden = true;
-      taskTextElement.hidden = false;
     }
   };
 
   const counterClickCallback = (event) => {
     if (event.target.tagName == "BUTTON") {
-      countersContainer.querySelector(".current-counter").className = "counter";
+      uncheckCounters(event.target);
       event.target.parentElement.className += " current-counter";
     }
     if (event.target.id === "completed-tasks-button") {
-      modeRender = true;
+      modeRender = "completed";
       currentPage = 1;
       switchPage(true);
     }
     if (event.target.id === "active-tasks-button") {
-      modeRender = false;
+      modeRender = "active";
       currentPage = 1;
       switchPage(true);
     }
     if (event.target.id === "all-tasks-button") {
-      modeRender = NaN;
+      modeRender = "all";
       currentPage = 1;
       switchPage(true);
     }
   };
+  
   let deleteAllCallback = () => {
     taskArray = taskArray.filter((task) => !task.isChecked);
-
     switchPage(true);
   };
 
